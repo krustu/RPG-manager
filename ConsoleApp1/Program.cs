@@ -1,8 +1,5 @@
-﻿using System;
-class Program
-{
-    static void Main()
-    {
-        Console.WriteLine("Hello world");
-    }
-}
+﻿using ConsoleApp1.Managers;
+using System;
+
+GameManager gameManager = new GameManager();
+gameManager.Run();

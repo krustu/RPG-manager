@@ -10,6 +10,7 @@ namespace ConsoleApp1.Models
         public int Damage { get; set; }
         public Archer(string? name, int hp) : base(name, hp)
         {
+            Damage = 15;
         }
 
         public void Attack(IDamageable target)
