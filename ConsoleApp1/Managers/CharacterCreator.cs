@@ -19,8 +19,10 @@ namespace ConsoleApp1.Managers
             Console.WriteLine("Elves   - 2");
             Console.WriteLine("Goblin  - 3");
             Console.WriteLine("Mage    - 4");
+            Console.WriteLine("Warrior - 5");
+            Console.WriteLine("Orc     - 6");
             Console.WriteLine("Back    - 0");
-            //Console.WriteLine("Varrior - 5");
+            
                 string? choice = Console.ReadLine();
                 switch (choice)
                 {
@@ -92,7 +94,42 @@ namespace ConsoleApp1.Managers
                             Console.WriteLine($"Error: {ex.Message}");
                         }
                         break;
+                    case "5":
+                        try
+                        {
+                            Console.WriteLine("Name of Character:");
+                            string nameA = Console.ReadLine() ?? "";
+
+                             Warrior a1 = new Warrior(nameA, 100);
+
+                            Characters.Add(a1);
+
+                            Console.WriteLine("Added successfully");
+                        }
+                        catch (Exception ex)
+                        {
+                            Console.WriteLine($"Error: {ex.Message}");
+                        }
+                        break;
+                    case "6":
+                        try
+                        {
+                            Console.WriteLine("Name of Character:");
+                            string nameA = Console.ReadLine() ?? "";
+
+                            Orc a1 = new Orc(nameA, 100);
+
+                            Characters.Add(a1);
+
+                            Console.WriteLine("Added successfully");
+                        }
+                        catch (Exception ex)
+                        {
+                            Console.WriteLine($"Error: {ex.Message}");
+                        }
+                        break;
                     case "0":
+
                         Console.WriteLine("Thank you for playing game. Goodbye!");
                         return;
                     default:

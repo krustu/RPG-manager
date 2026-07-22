@@ -9,8 +9,8 @@ namespace ConsoleApp1.Models
     {
         public int Damage { get; set; }
         public Orc(string? name, int hp) : base(name, hp)
-        { 
-
+        {
+            Damage = 15;
         }
         public void Attack(IDamageable target)
         {

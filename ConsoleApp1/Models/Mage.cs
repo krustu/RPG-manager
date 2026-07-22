@@ -9,9 +9,20 @@ namespace ConsoleApp1.Models
     public class Mage : Character, IAttackable
     {
         public int Damage { get; set; }
-        public Mage(string? name, int hp) : base(name, hp)
+        public int Mana { get; set; }
+        public List<ICastable> Skills { get; set; }
+        public Mage(string? name, int hp /* int mana*/) : base(name, hp)
         {
+            //Mana = mana;
+            Mana = 100;
+            Damage = 15;
+            Skills = new List<ICastable>()
+            {
 
+             new FireBall(),
+             new Heal()
+
+            };
         }
         public void Attack(IDamageable target)
         {
@@ -27,21 +38,20 @@ namespace ConsoleApp1.Models
 
 
 
-
-
-
-
-        public List<ICastable> Skills = new List<ICastable>()
-    {
-        new FireBall(),
-        new Heal()
-    };
+     
 
     }
     public class FireBall : ICastable
     {
+        public int ManaCost => 12;
         public void Use(Mage mage, Character character)
         {
+            if (mage.Mana < ManaCost)
+            {
+                Console.WriteLine("Not enough mana!");
+            }
+            mage.Mana -= ManaCost;
+
             int dmg = 30;
             character.HP -= dmg;
             Console.WriteLine($"{mage.Name} throw Fireball! {dmg} damage!" );
@@ -49,8 +59,14 @@ namespace ConsoleApp1.Models
     }
     public class Heal : ICastable
     {
+        public int ManaCost => 20;
         public void Use(Mage mage, Character character)
         {
+            if (mage.Mana < ManaCost)
+            {
+                Console.WriteLine("Not enough mana!");
+            }
+            mage.Mana -= ManaCost;
             int heal = 20;
             mage.HP += heal;
             Console.WriteLine($"{mage.Name} Healed {heal} hp ");

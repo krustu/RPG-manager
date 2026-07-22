@@ -8,6 +8,7 @@ namespace ConsoleApp1.Interfaces
 {
     public interface ICastable
     {
+        int ManaCost { get; }
         public void Use(Mage mage, Character character);
     }
 }

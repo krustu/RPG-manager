@@ -4,7 +4,7 @@ using System.Text;
 
 namespace ConsoleApp1.Managers
 {
-    internal class LootManager
+    public class LootManager
     {
     }
 }
