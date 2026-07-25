@@ -9,6 +9,7 @@ namespace ConsoleApp1.Models
     {
         public string? Name { get; set; }
         public int HP { get; set; }
+        public int Speed { get; private set; }
         // public int lvl { get; set; }
         public bool IsAlive => HP > 0;
 
@@ -33,17 +34,18 @@ namespace ConsoleApp1.Models
             HP -= damage;
         }
 
-        public Character(string? name , int hp )
+        public Character(string? name , int hp , int speed)
         {
             Name = name;
             HP = hp;
-
+            Speed = speed;
         }
 
         public virtual void Info()
         {
             Console.WriteLine($"name :{Name}");
             Console.WriteLine($"HP - {HP}");
+            Console.WriteLine($"Speed - {Speed}");
         }
     }
 }

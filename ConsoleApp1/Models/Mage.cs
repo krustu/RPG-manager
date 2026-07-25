@@ -11,11 +11,11 @@ namespace ConsoleApp1.Models
         public int Damage { get; set; }
         public int Mana { get; set; }
         public List<ICastable> Skills { get; set; }
-        public Mage(string? name, int hp /* int mana*/) : base(name, hp)
+        public Mage(string? name, int hp) : base(name, hp, 8)
         {
             //Mana = mana;
-            Mana = 100;
-            Damage = 15;
+            Mana = 70;
+            Damage = 6;
             Skills = new List<ICastable>()
             {
 

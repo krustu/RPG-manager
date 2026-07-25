@@ -8,9 +8,9 @@ namespace ConsoleApp1.Models
     public class Warrior : Character , IAttackable
     {
         public int Damage { get; set; }
-        public Warrior(string? name, int hp) : base(name, hp)
+        public Warrior(string? name, int hp) : base(name, hp, 5)
         {
-            Damage = 15;
+            Damage = 10;
         }
         public void Attack(IDamageable target)
         {

@@ -6,9 +6,9 @@ namespace ConsoleApp1.Models
 {
     public class Civilian : Character
     {
-                public Civilian(string? name, int hp ) : base(name, hp )
+                public Civilian(string? name, int hp ) : base(name, hp , 1)
         {
-
+            
         }
         public override void Loot()
         {

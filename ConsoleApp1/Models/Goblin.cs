@@ -8,9 +8,9 @@ namespace ConsoleApp1.Models
     public class Goblin : Character, IAttackable
     {
         public int Damage { get; set; }
-        public Goblin(string? name, int hp) : base(name, hp)
+        public Goblin(string? name, int hp) : base(name, hp, 12)
         {
-            Damage = 15;
+            Damage = 5;
         }
         public void Attack(IDamageable target)
         {
