@@ -7,7 +7,7 @@ namespace ConsoleApp1.Managers
 {
     public class BattleManager
     {
-        public void StartBAttle(List<Character> party, List<Character> Monsters)
+        public void StartBattle(List<Character> party, List<Character> Monsters)
         {
            while(party.Exists(x => x.IsAlive) && Monsters.Exists(x => x.IsAlive))
             {
