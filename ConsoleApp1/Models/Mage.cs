@@ -11,6 +11,9 @@ namespace ConsoleApp1.Models
         public int Damage { get; set; }
         public int Mana { get; set; }
         public List<ICastable> Skills { get; set; }
+
+        // we can use this list to store the skills of the mage 
+        // alse can added list like a parameter in the constructor to add skills when creating a mage
         public Mage(string? name, int hp) : base(name, hp, 8)
         {
             //Mana = mana;
@@ -34,11 +37,18 @@ namespace ConsoleApp1.Models
         {
             Console.WriteLine("+1000XP");
         }
-         
+
+        public override string Description() => "A wise wizard who wields powerful spells. " +
+                                                " Weak in melee, but deadly at range.";
+
+        public override string GetFullInfo()
+        {
+            Console.ForegroundColor = ConsoleColor.Red;
+            return base.GetFullInfo();
+        }
 
 
 
-     
 
     }
     public class FireBall : ICastable
@@ -49,12 +59,13 @@ namespace ConsoleApp1.Models
             if (mage.Mana < ManaCost)
             {
                 Console.WriteLine("Not enough mana!");
+                return;
             }
             mage.Mana -= ManaCost;
 
             int dmg = 30;
-            character.HP -= dmg;
-            Console.WriteLine($"{mage.Name} throw Fireball! {dmg} damage!" );
+            character.TakeDamage(dmg);
+            Console.WriteLine($"{mage.Name} throw Fireball at {character.Name}! {dmg} damage!" );
         }
     }
     public class Heal : ICastable
@@ -65,11 +76,12 @@ namespace ConsoleApp1.Models
             if (mage.Mana < ManaCost)
             {
                 Console.WriteLine("Not enough mana!");
+                return;
             }
             mage.Mana -= ManaCost;
             int heal = 20;
-            mage.HP += heal;
-            Console.WriteLine($"{mage.Name} Healed {heal} hp ");
+            character.HP += heal;
+            Console.WriteLine($"{mage.Name} healed {character.Name} for {heal} hp ");
         }
     }
 }

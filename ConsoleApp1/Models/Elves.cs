@@ -23,5 +23,13 @@ namespace ConsoleApp1.Models
         {
             Console.WriteLine("+1000XP");
         }
+        public override string Description() => "An ancient elf who draws strength from nature. " +
+                                                "Skilled in magic and archery.";
+
+        public override string GetFullInfo()
+        {
+            Console.ForegroundColor = ConsoleColor.Red;
+            return base.GetFullInfo();
+        }
     }
 }

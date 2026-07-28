@@ -25,5 +25,14 @@ namespace ConsoleApp1.Models
         {
             Console.WriteLine("+1000XP");
         }
+        public override string Description() => "A sharpshooter who prefers to attack from a distance." +
+                                                " Fast and elusive.";
+
+        public override string GetFullInfo()
+        {
+            Console.ForegroundColor = ConsoleColor.Red;
+            return base.GetFullInfo();
+        }
+
     }
 }

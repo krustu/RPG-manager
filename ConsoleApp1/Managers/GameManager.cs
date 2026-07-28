@@ -32,8 +32,7 @@ namespace ConsoleApp1.Managers
                 switch (choice)
                 {
                     case "1":
-                        //StartGame(); 
-                        Console.WriteLine("Nothing here, pls come back later");
+                        StartGame();
                         break;
                     case "2":
                         Info();
@@ -58,15 +57,41 @@ namespace ConsoleApp1.Managers
         }
             private void StartGame()
         {
-            while (true)
+            if (Characters.Count == 0)
             {
-                BattleManager battle = new BattleManager();
-                battle.StartBattle(Characters , Characters);
-
-                Console.ReadKey();
+                Console.WriteLine("Create a character first (option 4).");
+                return;
             }
 
+            List<Character> enemies = GenerateEnemies(Characters.Count);
+
+            BattleManager battle = new BattleManager();
+            battle.StartBattle(Characters, enemies);
+
+            Console.WriteLine("Press any key to return to menu...");
+            Console.ReadKey();
         }
+            private List<Character> GenerateEnemies(int partySize)
+        {
+            var enemies = new List<Character>();
+            var rng = new Random();
+            int count = Math.Max(1, partySize);
+
+            for (int i = 0; i < count; i++)
+            {
+                Character enemy = rng.Next(2) == 0
+                    ? new Goblin($"Goblin {i + 1}", 20)
+                    : new Orc($"Orc {i + 1}", 45);
+                enemies.Add(enemy);
+            }
+
+            return enemies;
+        }
+
+
+
+
+
             private void Info()
         {
             while (true)
@@ -115,7 +140,7 @@ namespace ConsoleApp1.Managers
                     case "3":
                         try
                         {
-
+                            Discritption();
                         }
                         catch (Exception ex)
                         {
@@ -135,11 +160,13 @@ namespace ConsoleApp1.Managers
         }
             private void Discritption()
         {
-            while (true)
-            {
-                Console.WriteLine("dis");
-                Console.ReadKey();
-            }
+            
+                Console.WriteLine("Description of characters:");
+                foreach (Character character in Characters)
+                {
+                    Console.WriteLine($"{character.Name}: {character.Description}");
+                }
+            
         }
             private void Create()
         {

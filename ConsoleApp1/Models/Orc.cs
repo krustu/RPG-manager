@@ -22,5 +22,12 @@ namespace ConsoleApp1.Models
         {
             Console.WriteLine("+1000XP");
         }
+        public override string Description() => "A brutal and ferocious warrior who deals immense damage." +
+                                                " Unafraid of pain and always eager to attack.";
+        public override string GetFullInfo()
+        {
+            Console.ForegroundColor = ConsoleColor.Red;
+            return base.GetFullInfo();
+        }
     }
 }

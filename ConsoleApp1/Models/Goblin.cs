@@ -22,5 +22,13 @@ namespace ConsoleApp1.Models
         {
             Console.WriteLine("+1000XP");
         }
+        public override string Description() => "A cunning and wily warrior who relies on speed and poisonous attacks." +
+                                                " Small but dangerous.";
+
+        public override string GetFullInfo()
+        {
+            Console.ForegroundColor = ConsoleColor.Red;
+            return base.GetFullInfo();
+        }
     }
 }

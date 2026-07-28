@@ -5,7 +5,7 @@ using System.Text;
 
 namespace ConsoleApp1.Models
 {
-    public class Character : IDamageable , ILootable
+    public abstract class Character : IDamageable , ILootable , IDescription 
     {
         public string? Name { get; set; }
         public int HP { get; set; }
@@ -41,11 +41,18 @@ namespace ConsoleApp1.Models
             Speed = speed;
         }
 
-        public virtual void Info()
+        public virtual string Description()
         {
-            Console.WriteLine($"name :{Name}");
-            Console.WriteLine($"HP - {HP}");
-            Console.WriteLine($"Speed - {Speed}");
+            return $"Name: {Name}, HP: {HP}, Speed: {Speed}";
+        }
+
+        public virtual string GetFullInfo()
+        {
+            return $@"
+                   ╔═══════════════════════╗
+                   ║   {Description()}     ║
+                   ╚═══════════════════════╝";
         }
     }
 }
+//$"Name: {Name}, HP: {HP}, Speed: {Speed}";
