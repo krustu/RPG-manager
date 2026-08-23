@@ -10,7 +10,7 @@ namespace ConsoleApp1.Managers
         
         
         public void browlers(List<Character> BaseCharacters)
-        {
+        { 
 
             Archer a1 = new Archer("Luki", 35);
             BaseCharacters.Add(a1);
