@@ -1,82 +1,77 @@
 ﻿using System;
-using System.ComponentModel;
+using System.IO;
+using System.Collections.Generic;
+using System.Runtime.CompilerServices;
+using System.Security.Cryptography.X509Certificates;
 class Program
-{
+{ 
+    
     static void Main()
     {
-        List<Robot> robots = new List<Robot>
-        {
-            new Robot(new WheeledMovement(), new LaserWeapon()),
-            new Robot(new LeggedMovement(), new MeleeWeapon()),
-            new Robot(new WheeledMovement(), new MeleeWeapon())
+        var smser = new List<IMessegeSender>();
 
-        };
-        foreach (Robot robot in robots)
+        ConsoleMessageSender a1 = new ConsoleMessageSender();
+        FileMessageSender a2 = new FileMessageSender();
+        FakeSmsMessageSender a3 = new FakeSmsMessageSender();
+        smser.Add(a1);
+        smser.Add(a2);
+        smser.Add(a3);
+        NotificationService Notiall = new NotificationService(a1 , a2 , a3);
+        Notiall.AllGetMessage(smser, "Hello everyone!");
+  
+    }
+    
+}
+public interface IMessegeSender
+{
+    void SendMessege(string Message);
+}
+public class NotificationService
+{
+    
+    private ConsoleMessageSender Sender1;
+    private FileMessageSender Sender2;
+    private FakeSmsMessageSender Sender3;
+    public NotificationService(ConsoleMessageSender sender1, FileMessageSender sender2, FakeSmsMessageSender sender3)
+    {
+        Sender1 = sender1;
+        Sender2 = sender2;
+        Sender3 = sender3;
+    }
+    
+    public void AllGetMessage(List <IMessegeSender> senderList, string Message)
+    {
+        foreach (IMessegeSender sender in senderList)
         {
-            robot.Act();
-
+            sender.SendMessege(Message);
         }
-
-
-        Console.WriteLine("hi");
-        Console.ReadKey();
     }
-}
-public interface IMovement
-{
-    void Move();
-}
-public interface IWeapon
-{
 
-    void Attack();
 }
-public class Robot
+public class ConsoleMessageSender : IMessegeSender
 {
-    private IMovement _movement;
-    private IWeapon _weapon;
-    public Robot(IMovement movement, IWeapon weaponq)
-    {
-        _movement = movement;
-        _weapon = weaponq;
-    }
-    public void Act()
+    public void SendMessege(string Messsage)
     {
 
-        _movement?.Move();
-        _weapon?.Attack();
+        Console.WriteLine($"Send :{Messsage}");
     }
-
-
 }
-
-public class WheeledMovement : IMovement
+public class FileMessageSender : IMessegeSender
 {
-    public void Move()
+ 
+    public void SendMessege(string Message)
     {
-        Console.WriteLine("Driving");
-    }
-}
-public class LeggedMovement : IMovement
-{
-    public void Move()
-    {
-        Console.WriteLine("Walking");
-    }
-}
-public class LaserWeapon : IWeapon
-{
+        File.WriteAllText("stm.txt", Message);
 
-    public void Attack()
-    {
-        Console.WriteLine("Bum! Bum!");
+       // Console.WriteLine($"[.txt]{Message}");
     }
 }
-public class MeleeWeapon : IWeapon
-{
 
-    public void Attack()
+public class FakeSmsMessageSender : IMessegeSender
+{
+    public void SendMessege(string Message)
     {
-        Console.WriteLine("CHAH!");
+        Console.WriteLine($"from Sms - {Message} ");
     }
 }
+
