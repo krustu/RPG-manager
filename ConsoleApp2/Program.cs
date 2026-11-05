@@ -1,98 +1,80 @@
 ﻿using System;
-class Program
+using System.Xml.Linq;
+class Proram
 {
+    // Files : ApplicationEntryPoint.cs
     static void Main()
     {
-        InMemoryOrderRepository memoryRepo =
-            new InMemoryOrderRepository();
-        ConsoleSender sender =
-            new ConsoleSender();
-        ConsoleLogger logger =
-            new ConsoleLogger();
+      
+            var repository = new InMemoryOrderRepository();
+            var service = new OrderService(repository);
+            service.Place("Fantasy Book", 19.99m);
+            service.Place("Science Fiction Book", 24.99m);
+            service.Place("Mystery Book", 14.99m);
 
-        OrderService service = 
-            new OrderService(memoryRepo, sender, logger);
-        App app = new App(service);
-        app.Run();
+            try { service.Place("", 0m); }                                   // только он под try
+            catch (ArgumentException ex) { Console.WriteLine($"Rejected: {ex.Message}"); }
 
-        //  Console.ReadKey();
-        //  foreach(var a in memoryRepo.GetAll())
-        //  {
-        //      Console.WriteLine(a);
-        //  }
-
+            Console.WriteLine($"Total sum of orders: {service.TotalSum():C}");   // сумма должна напечататься
+            foreach (var order in repository.GetAll())
+            {
+                Console.WriteLine($"Order ID: {order.Id}, Product: {order.Product}, Price: {order.Price:C}");
+            }
+        
+        
+        
+      
     }
 }
-public interface ILogger
+// Files : Model.cs
+public class Order
 {
-    void Log(string text);
+    public int Id { get; set; }
+    public string Product { get; set; } = "";
+    public decimal Price { get; set; }
 }
+// Files : Repository.cs
 public interface IOrderRepository
 {
-    void Save(string order);
-}
-public interface IMessageSender
-{
-    void Send(string text);
-}
-public class OrderService
-{
-    private readonly IOrderRepository _order;
-    private readonly IMessageSender _sender;
-    private readonly ILogger _logger;
-    public OrderService(IOrderRepository order, IMessageSender sender, ILogger logger)
-    {
-        _order = order;
-        _sender = sender;
-        _logger = logger;
-    }
-    public void Place(string order)
-    {
-        _order.Save(order);
-        _sender.Send(order);
-        _logger.Log($"Order placed: {order}");
-    }
-}
-public class App
-{
-    private OrderService _service;
-    public App(OrderService service)
-    {
-        _service = service;
-    }
-    public void Run()
-    {
-        // 1 order
-        _service.Place("Fanta");
-
-        // 2 order
-        _service.Place("cola");
-    }
+    void Save(Order order);
+    IReadOnlyList<Order> GetAll();
 }
 public class InMemoryOrderRepository : IOrderRepository
 {
-    private readonly List<string> _orders = new();
-    public void Save(string text)
+    private readonly List<Order> _orders = new();
+    public void Save(Order order)
     {
-        _orders.Add(text);
+        _orders.Add(order);
     }
-    public IReadOnlyList<string> GetAll()
+    public IReadOnlyList<Order> GetAll()
     {
-        return _orders;
+        return _orders.AsReadOnly();
     }
 }
-public class ConsoleSender : IMessageSender
+// Files : Service.cs
+public class OrderService
 {
-    public void Send(string text)
+    private readonly IOrderRepository _orderRepository;
+    public OrderService(IOrderRepository orderRepository)
     {
-        Console.WriteLine($"(Console) sent _ {text} _");
+        _orderRepository = orderRepository;
+    }
+    public Order Place(string product, decimal price)
+    {
+        if(string.IsNullOrWhiteSpace(product))
+        {
+            throw new ArgumentException("Product name cannot be empty.", nameof(product));
+        }
+        if(price <= 0)
+        {
+            throw new ArgumentException("Price cannot be negative.", nameof(price));
+        }
 
+        var order = new Order { Id = _orderRepository.GetAll().Count + 1, Product = product, Price = price };
+        _orderRepository.Save(order);
+        return order;
     }
+    public decimal TotalSum() => _orderRepository.GetAll().Sum(o => o.Price);
 }
-public class ConsoleLogger : ILogger
-{
-    public void Log(string text)
-    {
-        Console.WriteLine($"(Console) log _ {text} _");
-    }
-}
+
+
